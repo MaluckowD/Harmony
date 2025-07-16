@@ -49,7 +49,7 @@ export default function LoginPage() {
                     <div className="flex items-center">
                         <Label htmlFor="password">Пароль</Label>
                     </div>
-                    <Input id="password" type="password" required />
+                    <Input id="password" type="password" placeholder="Введите пароль" required />
                     </div>
                     <Button type="submit" className="w-full">
                         Войти
