@@ -25,7 +25,7 @@ export function UserMenu() {
   if (!isAuth) {
     return (
         <Link href="/login">
-            <Button variant="ghost" size="sm">
+            <Button className='cursor-pointer' variant="ghost" size="sm">
                 <User className="h-4 w-4 mr-2" />
                 Войти
             </Button>
