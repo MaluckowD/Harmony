@@ -121,7 +121,7 @@ export default function Home() {
       <footer className="mt-20">
         <div className="container mx-auto flex flex-col items-center space-y-4 px-4 text-center">
           <div className="text-gray-500 dark:text-gray-400">
-            © 2025 Melodify. Все права защищены.
+            © 2025 Harmony. Все права защищены.
           </div>
           <div className="max-w-md text-gray-500 dark:text-gray-400">
             Это приложение никак не связано с YouTube Music и не является их продуктом.
