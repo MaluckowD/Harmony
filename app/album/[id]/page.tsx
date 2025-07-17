@@ -55,9 +55,17 @@ export default function AlbumPage() {
           
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2 border-border/50">
+            <div className="border-border/50 px-6 py-4">
+              <div className="grid grid-cols-12 gap-4 text-sm text-muted-foreground">
+                <div className="col-span-1">#</div>
+                <div className="col-span-6">НАЗВАНИЕ</div>
+                <div className="col-span-3">АЛЬБОМ</div>
+                <div className="col-span-2 text-right">ВРЕМЯ</div>
+              </div>
+            </div>
             {Array.from({ length: 6 }).map((track, index) => (
-              <Card key={index} className="group hover:bg-muted/50 transition-colors border-border/50">
+              <Card key={index} className="group hover:bg-muted/50 transition-colors">
                 <CardContent className="p-0">
                   <div className="flex items-center gap-4 p-0 pl-4 pr-4">
                     <div className="text-muted-foreground text-sm w-6 text-center">{index + 1}</div>
