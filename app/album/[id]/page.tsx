@@ -63,7 +63,7 @@ export default function AlbumPage() {
               </div>
             </div>
             {Array.from({ length: 6 }).map((track, index) => (
-              <Card key={index} className="group hover:bg-muted/50 transition-colors">
+              <Card key={index} className="group hover:bg-muted/50 transition-colors p-0 pt-3 pb-3">
                 <CardContent className="p-0">
                   <div className="flex items-center gap-4 p-0 pl-4 pr-4">
                     <div className="text-muted-foreground text-sm w-6 text-center">{index + 1}</div>
