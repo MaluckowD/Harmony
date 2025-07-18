@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 
 import { Button } from "@/components/ui/button"
@@ -13,7 +11,7 @@ export default function AlbumPage() {
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <div className="relative">
         <Link href="/">
-          <Button variant="ghost" className="mb-6">
+          <Button variant="ghost" className="mb-6 cursor-pointer">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Назад
           </Button>
