@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Music } from 'lucide-react';
-import { UserMenu } from '../userMenu/userMenu';
+import { UserMenu } from '../userMenu';
 
 export const Header = () => {
   const pathname = usePathname();
