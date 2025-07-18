@@ -1,18 +1,18 @@
 import { AppWindowIcon, CodeIcon, Heart, Play, Plus } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/components/ui/button"
 import {
   Card,
   CardContent,
-} from "@/components/ui/card"
+} from "@/shared/components/ui/card"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/shared/components/ui/tabs"
 import Image from "next/image"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/shared/components/ui/carousel"
 import Link from "next/link"
 
 export default function ProfilePage() {

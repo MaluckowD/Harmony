@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/shared/components/ui/card"
 import Image from "next/image"
 import {
   Carousel,
@@ -7,11 +7,11 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/shared/components/ui/carousel"
 import Link from "next/link";
 import { Heart, Play, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TelegramIcon } from "@/components/telegram-icon";
+import { Button } from "@/shared/components/ui/button";
+import { TelegramIcon } from "@/shared/components/telegram-icon";
 
 export default function Home() {
   return (
