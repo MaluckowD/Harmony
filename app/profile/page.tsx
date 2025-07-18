@@ -1,4 +1,4 @@
-import { AppWindowIcon, CodeIcon, Heart, Play, Plus } from "lucide-react"
+import { Heart, Play, Plus } from "lucide-react"
 
 import { Button } from "@/shared/components/ui/button"
 import {
