@@ -1,3 +1,4 @@
+'use client'
 import * as React from "react"
 import { Card, CardContent } from "@/shared/components/ui/card"
 import Image from "next/image"
@@ -12,8 +13,20 @@ import Link from "next/link";
 import { Heart, Play, Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
+import { useAlbums } from "@/entities/albums/hooks/use-aibums";
+import { useStore } from "@/shared/store/store"
 
 export default function Home() {
+  const { 
+    data, 
+    isLoading, 
+    isError, 
+    error 
+  } = useAlbums();
+
+  const albums = useStore((state) => state.albums)
+  console.log(albums)
+  console.log(data)
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <div className="relative">
