@@ -10,11 +10,11 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel"
 import Link from "next/link";
-import { Heart, Play, Plus } from "lucide-react";
+import { Heart, Loader2, Play, Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
-import { useAlbums } from "@/entities/albums/hooks/use-aibums";
 import { useStore } from "@/shared/store/store"
+import { useAlbums } from "@/entities/albums/hooks/use-albums"
 
 export default function Home() {
   const { 
@@ -39,7 +39,12 @@ export default function Home() {
           className="w-full"
         >
           <div className="relative">
-            <CarouselContent className="-ml-4">
+            { isLoading ? (
+                <div className="flex h-20 items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : (
+              <CarouselContent className="-ml-4">
               {Array.from({ length: 6 }).map((_, index) => (
                 <CarouselItem 
                   key={index} 
@@ -76,11 +81,17 @@ export default function Home() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
-            <div className="absolute -top-12 right-0 flex gap-2 -mb-2">
-              <CarouselPrevious className="static cursor-pointer" />
-              <CarouselNext className="static cursor-pointer" />
+            )}
+
+            { isLoading ? (
+                <div></div>
+            ) : (
+              <div className="absolute -top-12 right-0 flex gap-2 -mb-2">
+                <CarouselPrevious className="static cursor-pointer" />
+                <CarouselNext className="static cursor-pointer" />
             </div>
+            )}
+            
           </div>
         </Carousel>
 
