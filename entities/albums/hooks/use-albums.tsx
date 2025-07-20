@@ -3,8 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { albumsApi } from '../api';
 import { useStore } from '@/shared/store/store';
 
-
 export const useAlbums = () => {
+  
+  const setAlbums = useStore((state) => state.setAlbums)
   
   return useQuery({
     queryKey: ['albums'],
@@ -13,8 +14,7 @@ export const useAlbums = () => {
         return response
     },
     select: (data) => {
-        useStore.setState({ albums: data })
-        console.log(data)
+        setAlbums(data.data)
     },
   })
 };

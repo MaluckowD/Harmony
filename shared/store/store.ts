@@ -6,7 +6,8 @@ export const useStore = create((set, get) => ({
     albums: [],
     tracks: [],
     token: null,
-    
+    setAlbums: (newAlbums) => set({ albums: newAlbums }),
+    setTracks: (newTracks) => set({ tracks: newTracks}),
 
 }))
 

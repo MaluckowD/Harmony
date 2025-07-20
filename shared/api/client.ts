@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://slow-tools-shine.loca.lt/';
+
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://tidy-humans-clap.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://slow-tools-shine.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },

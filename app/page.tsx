@@ -15,6 +15,7 @@ import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
 import { useStore } from "@/shared/store/store"
 import { useAlbums } from "@/entities/albums/hooks/use-albums"
+import { apiClient, BASE_URL } from "@/shared/api/client"
 
 export default function Home() {
   const { 
@@ -45,17 +46,17 @@ export default function Home() {
                 </div>
             ) : (
               <CarouselContent className="-ml-4">
-              {Array.from({ length: 6 }).map((_, index) => (
+              {albums.map((album) => (
                 <CarouselItem 
-                  key={index} 
+                  key={album.id} 
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                 >
                   <Card className="group h-full p-0">
-                    <Link href={`/album/${index}`}>
+                    <Link href={`/album/${album.id}`}>
                       <CardContent className="flex flex-col h-full p-0">
                         <div className="w-full flex-grow-0 relative">
                           <Image
-                            src={"/image.png"}
+                            src={`${BASE_URL}albumImages/${album.imagePath}`}
                             alt={"текст"}
                             width={700}
                             height={600}
@@ -71,9 +72,8 @@ export default function Home() {
                           </Button>
                         </div>
                         <div className="p-4 flex-grow">
-                          <h3 className="font-semibold text-lg mb-1 truncate">Название альбома</h3>
-                          <p className="text-muted-foreground text-sm mb-1">{"Автор"}</p>
-                          {true && <p className="text-muted-foreground text-xs">{"2023"}</p>}
+                          <h3 className="font-semibold text-lg mb-1 truncate">{album.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-1">{album.artistName}</p>
                         </div>
                       </CardContent>
                     </Link>
