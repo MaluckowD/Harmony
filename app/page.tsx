@@ -1,5 +1,6 @@
+'use client'
 import * as React from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/shared/components/ui/card"
 import Image from "next/image"
 import {
   Carousel,
@@ -7,13 +8,31 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/shared/components/ui/carousel"
 import Link from "next/link";
-import { Heart, Play, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TelegramIcon } from "@/components/telegram-icon";
+import { Heart, Loader2, Play, Plus } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
+import { TelegramIcon } from "@/shared/components/telegram-icon";
+import { useStore } from "@/shared/store/store"
+import { useAlbums } from "@/entities/albums/hooks/use-albums"
+import { apiClient, BASE_URL } from "@/shared/api/client"
+import { useTracks } from "@/entities/tracks/hooks"
 
 export default function Home() {
+  const { 
+    data, 
+    isLoading, 
+    isError, 
+    error 
+  } = useAlbums();
+
+  const albums = useStore((state) => state.albums)
+  const tracks = useStore((state) => state.tracks)
+  console.log(albums)
+  console.log(tracks)
+  const { isLoading: loadingTracks } = useTracks();
+
+
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <div className="relative">
@@ -26,18 +45,23 @@ export default function Home() {
           className="w-full"
         >
           <div className="relative">
-            <CarouselContent className="-ml-4">
-              {Array.from({ length: 6 }).map((_, index) => (
+            { isLoading ? (
+                <div className="flex h-20 items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : (
+              <CarouselContent className="-ml-4">
+              {albums.map((album) => (
                 <CarouselItem 
-                  key={index} 
+                  key={album.id} 
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                 >
                   <Card className="group h-full p-0">
-                    <Link href={`/album/${index}`}>
+                    <Link href={`/album/${album.id}`}>
                       <CardContent className="flex flex-col h-full p-0">
                         <div className="w-full flex-grow-0 relative">
                           <Image
-                            src={"/image.png"}
+                            src={`${BASE_URL}albumImages/${album.imagePath}`}
                             alt={"текст"}
                             width={700}
                             height={600}
@@ -53,9 +77,8 @@ export default function Home() {
                           </Button>
                         </div>
                         <div className="p-4 flex-grow">
-                          <h3 className="font-semibold text-lg mb-1 truncate">Название альбома</h3>
-                          <p className="text-muted-foreground text-sm mb-1">{"Автор"}</p>
-                          {true && <p className="text-muted-foreground text-xs">{"2023"}</p>}
+                          <h3 className="font-semibold text-lg mb-1 truncate">{album.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-1">{album.artistName}</p>
                         </div>
                       </CardContent>
                     </Link>
@@ -63,11 +86,17 @@ export default function Home() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
-            <div className="absolute -top-12 right-0 flex gap-2 -mb-2">
-              <CarouselPrevious className="static cursor-pointer" />
-              <CarouselNext className="static cursor-pointer" />
+            )}
+
+            { isLoading ? (
+                <div></div>
+            ) : (
+              <div className="absolute -top-12 right-0 flex gap-2 -mb-2">
+                <CarouselPrevious className="static cursor-pointer" />
+                <CarouselNext className="static cursor-pointer" />
             </div>
+            )}
+            
           </div>
         </Carousel>
 
@@ -76,15 +105,20 @@ export default function Home() {
 
       <div className="relative">
         <h2 className="mb-10 mt-10 text-3xl font-bold">Треки</h2>
-        <div className="space-y-2">
-            {Array.from({ length: 6 }).map((track, index) => (
-              <Card key={index} className="group hover:bg-muted/50 transition-colors border-border/50">
+        { loadingTracks ? (
+                <div className="flex h-20 items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : (
+              <div className="space-y-2">
+            {tracks.map((track) => (
+              <Card key={track.id} className="group hover:bg-muted/50 transition-colors border-border/50">
                 <CardContent className="p-0">
                   <div className="flex items-center gap-4 p-0 pl-4 pr-4">
-                    <div className="text-muted-foreground text-sm w-6 text-center">{index + 1}</div>
+                    <div className="text-muted-foreground text-sm w-6 text-center">{track.id}</div>
                     <div className="relative">
                       <Image
-                        src={"next.svg"}
+                        src={`${BASE_URL}songImages/${track.imagePath}`}
                         alt={"текст"}
                         width={60}
                         height={60}
@@ -100,8 +134,8 @@ export default function Home() {
                       </Button>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium truncate">{"Реал Мадрид"}</h4>
-                      <p className="text-muted-foreground text-sm truncate">{"Поэт"}</p>
+                      <h4 className="font-medium truncate">{track.title}</h4>
+                      <p className="text-muted-foreground text-sm truncate">{track.artistName}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Button size="icon" variant="ghost">
@@ -117,6 +151,7 @@ export default function Home() {
               </Card>
             ))}
           </div>
+        ) }
       </div>
       <footer className="mt-20">
         <div className="container mx-auto flex flex-col items-center space-y-4 px-4 text-center">

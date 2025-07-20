@@ -1,10 +1,10 @@
 import type React from "react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/components/ui/button"
 import Link from "next/link"
 import { ArrowLeft, Heart, Play, Plus } from "lucide-react"
 import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/shared/components/ui/card"
 
 export default function AlbumPage() {
   return (

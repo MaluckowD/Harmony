@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Music } from 'lucide-react';
 import { UserMenu } from '../userMenu';
+import { SearchItem } from '@/shared/components/search';
 
 export const Header = () => {
   const pathname = usePathname();
@@ -17,6 +18,7 @@ export const Header = () => {
             <Music className="h-6 w-6 text-primary" />
             <span className="hidden sm:inline">Harmony</span>
           </Link>
+          <SearchItem/>
           {/* {isChatPage && (
             <div className="hidden items-center gap-1 text-sm text-muted-foreground md:flex">
               <span>/</span>

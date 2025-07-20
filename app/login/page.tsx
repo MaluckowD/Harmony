@@ -2,20 +2,18 @@
 
 import type React from "react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/shared/components/ui/card"
+import { Input } from "@/shared/components/ui/input"
+import { Label } from "@/shared/components/ui/label"
 import Link from "next/link"
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/shared/components/ui/separator"
 import { Music } from "lucide-react"
 
 export default function LoginPage() {
