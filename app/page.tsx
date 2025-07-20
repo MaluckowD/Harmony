@@ -144,7 +144,6 @@ export default function Home() {
                       <Button size="icon" variant="ghost">
                         <Plus className="h-4 w-4" />
                       </Button>
-                      <span className="text-muted-foreground text-sm w-12 text-right">{"1:89"}</span>
                     </div>
                   </div>
                 </CardContent>
