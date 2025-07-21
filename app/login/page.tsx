@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
-import { toast } from "@/shared/components/ui/use-toast"
 import { Music } from "lucide-react"
 import Link from "next/link"
 import * as z from "zod"
@@ -26,62 +25,46 @@ import {
 } from "@/shared/components/ui/form"
 import { Input } from "@/shared/components/ui/input"
 import { Separator } from "@/shared/components/ui/separator"
+import { loginApi } from "@/features/auth/api"
+import { useStore } from "@/shared/store/store"
 
-// Схема валидации
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Введите корректный email",
+  username: z.string().min(3, {
+    message: "Пароль должен содержать минимум 6 символов",
   }),
   password: z.string().min(6, {
     message: "Пароль должен содержать минимум 6 символов",
   }),
 })
 
+type FormValues = z.infer<typeof formSchema>
+
 export default function LoginPage() {
+  const setUserId = useStore((state) => state.setUserId)
   const router = useRouter()
-  const form = useForm({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (values: FormValues) => {
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+      const response = await loginApi.login({
+        username: values.username,
+        password: values.password
       })
-
-      if (!response.ok) {
-        throw new Error("Неверные учетные данные")
+      
+      if (response?.status === 200 || response?.status === 201) {
+        localStorage.setItem('token', response.data.token);
+        setUserId(response.data.user.id)
+        router.push('/');
+      } else {
+        throw new Error(response?.data?.message || "Неизвестная ошибка")
       }
-
-      const result = await response.json()
-      
-      toast({
-        title: "Успешный вход",
-        description: "Вы успешно авторизовались",
-      })
-
-      // Сохраняем токен (пример)
-      localStorage.setItem("token", result.token)
-      
-      // Перенаправляем на главную страницу
-      router.push("/")
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Ошибка входа",
-        description: error.message || "Произошла ошибка при входе",
-      })
     }
   }
 
@@ -104,7 +87,7 @@ export default function LoginPage() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
@@ -135,8 +118,12 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Войти
+              <Button 
+                type="submit" 
+                className="w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Вход..." : "Войти"}
               </Button>
             </form>
           </Form>

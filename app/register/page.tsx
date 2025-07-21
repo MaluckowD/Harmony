@@ -27,7 +27,6 @@ import { Input } from "@/shared/components/ui/input"
 import { Separator } from "@/shared/components/ui/separator"
 import { regApi } from "@/features/registration/api/api"
 
-// Схема валидации с помощью Zod
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Имя должно содержать минимум 2 символа",
@@ -63,11 +62,11 @@ export default function RegistrationPage() {
       const response = await regApi.registration({username, password })
 
       if (response?.status === 200 || response?.status === 201) {
-        localStorage.setItem('email', username);
+        localStorage.setItem('name', username);
         localStorage.setItem('password', values.password);
         router.push(`/login`);
       }
-      
+
     } catch (error) {
     }
   }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://bright-gifts-enjoy.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://lovely-terms-doubt.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://bright-gifts-enjoy.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://lovely-terms-doubt.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
