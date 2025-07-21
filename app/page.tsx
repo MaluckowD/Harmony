@@ -15,28 +15,34 @@ import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
 import { useStore } from "@/shared/store/store"
 import { useAlbums } from "@/entities/albums/hooks/use-albums"
-import { apiClient, BASE_URL } from "@/shared/api/client"
+import { BASE_URL } from "@/shared/api/client"
 import { useTracks } from "@/entities/tracks/hooks"
+import { useState } from "react"
+import { AudioPlayer } from "@/shared/components/AudioPlayer"
 
 export default function Home() {
-  const { 
-    data, 
-    isLoading, 
-    isError, 
-    error 
-  } = useAlbums();
-
+  const { isLoading, error: albumsError } = useAlbums();
   const albums = useStore((state) => state.albums)
   const tracks = useStore((state) => state.tracks)
-  console.log(albums)
-  console.log(tracks)
-  const { isLoading: loadingTracks } = useTracks();
+  const openPlayer = useStore((state) => state.openPlayer)
+  const isPlayerOpen = useStore((state) => state.isPlayerOpen)
+  const { isLoading: loadingTracks, error } = useTracks();
+  const [audioUrl, setAudioUrl] = useState("")
+  // const [isPlayerOpen, setIsPlayerOpen] = useState(false)
 
+  const handlePlayTrack = (track) => {
+    setAudioUrl(`${BASE_URL}songs/${track.filePath}`)
+    openPlayer()
+  };
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <div className="relative">
         <h2 className="mb-10 text-3xl font-bold">Альбомы</h2>
+        
+        {isPlayerOpen && (
+          <AudioPlayer src={audioUrl}/>
+        )}
         
         <Carousel
           opts={{
@@ -49,10 +55,12 @@ export default function Home() {
                 <div className="flex h-20 items-center justify-center">
                   <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
+            ) : albumsError ? (
+              <div className="text-muted-foreground text-sm mb-1">Ошибка получения альбомов!</div>
             ) : (
               <CarouselContent className="-ml-4">
               {albums.map((album) => (
-                <CarouselItem 
+                <CarouselItem
                   key={album.id} 
                   className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                 >
@@ -109,6 +117,10 @@ export default function Home() {
                 <div className="flex h-20 items-center justify-center">
                   <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
+            ) : error ? (
+              <div  className="text-muted-foreground text-sm mb-1">
+                Не удалось загрузить песни! Попробуйте позже!
+              </div>
             ) : (
               <div className="space-y-2">
             {tracks.map((track) => (
@@ -128,7 +140,7 @@ export default function Home() {
                         size="icon"
                         variant="secondary"
                         className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition-opacity"
-                        // onClick={() => handlePlayTrack(track)}
+                        onClick={() => handlePlayTrack(track)}
                       >
                         <Play className="h-4 w-4" />
                       </Button>

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://evil-queens-train.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://real-plums-try.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://evil-queens-train.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://real-plums-try.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
