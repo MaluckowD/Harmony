@@ -1,6 +1,12 @@
 "use client"
 
-import type React from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { toast } from "@/shared/components/ui/use-toast"
+import { Music } from "lucide-react"
+import Link from "next/link"
+import * as z from "zod"
 
 import { Button } from "@/shared/components/ui/button"
 import {
@@ -10,63 +16,143 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/components/ui/form"
 import { Input } from "@/shared/components/ui/input"
-import { Label } from "@/shared/components/ui/label"
-import Link from "next/link"
 import { Separator } from "@/shared/components/ui/separator"
-import { Music } from "lucide-react"
+
+// Схема валидации
+const formSchema = z.object({
+  email: z.string().email({
+    message: "Введите корректный email",
+  }),
+  password: z.string().min(6, {
+    message: "Пароль должен содержать минимум 6 символов",
+  }),
+})
 
 export default function LoginPage() {
+  const router = useRouter()
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Неверные учетные данные")
+      }
+
+      const result = await response.json()
+      
+      toast({
+        title: "Успешный вход",
+        description: "Вы успешно авторизовались",
+      })
+
+      // Сохраняем токен (пример)
+      localStorage.setItem("token", result.token)
+      
+      // Перенаправляем на главную страницу
+      router.push("/")
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Ошибка входа",
+        description: error.message || "Произошла ошибка при входе",
+      })
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <Card className="w-full max-w-sm m-0 mx-auto">
-            <CardHeader className="text-center">
-                <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary rounded-full">
-                    <Music className="h-8 w-8 text-primary-foreground" />
-                    </div>
-                </div>
-                <CardTitle className="text-2xl">Добро пожаловать</CardTitle>
-                <CardDescription>
-                Войдите в свой аккаунт для доступа к музыке
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <form>
-                <div className="flex flex-col gap-6">
-                    <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="p-3 bg-primary rounded-full">
+              <Music className="h-8 w-8 text-primary-foreground" />
+            </div>
+          </div>
+          <CardTitle className="text-2xl">Добро пожаловать</CardTitle>
+          <CardDescription>
+            Войдите в свой аккаунт для доступа к музыке
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
                         placeholder="m@example.com"
-                        required
-                    />
-                    </div>
-                    <div className="grid gap-2">
-                    <div className="flex items-center">
-                        <Label htmlFor="password">Пароль</Label>
-                    </div>
-                    <Input id="password" type="password" placeholder="Введите пароль" required />
-                    </div>
-                    <Button type="submit" className="w-full">
-                        Войти
-                    </Button>
-                </div>
-                </form>
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Пароль</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Введите пароль"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                Войти
+              </Button>
+            </form>
+          </Form>
 
-                <Separator className="my-6" />
+          <Separator className="my-6" />
 
-                <div className="text-center">
-                    <p className="text-sm text-muted-foreground">
-                    Нет аккаунта?{" "}
-                    <Link href="/register" className="text-primary hover:underline">
-                        Зарегистрироваться
-                    </Link>
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
+              Нет аккаунта?{" "}
+              <Link href="/register" className="text-primary hover:underline">
+                Зарегистрироваться
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

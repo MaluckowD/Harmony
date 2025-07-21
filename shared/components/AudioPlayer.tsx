@@ -8,12 +8,15 @@ import { Slider } from '@/components/ui/slider';
 import { useStore } from '../store/store';
 
 export const AudioPlayer = ({src}) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const closePlayer = useStore((state) => state.closePlayer)
+  const isPlaying = useStore((state) => state.isPlaying)
+  const setIsPlaying = useStore((state) => state.setIsPlaying)
+  const currentTrack = useStore((state) => state.currentTrack)
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -40,9 +43,9 @@ export const AudioPlayer = ({src}) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 z-10">
+    <div className="fixed bottom-10 left-0 right-0 bg-background border-t p-4 z-10">
       <div className="flex justify-between items-center mb-2">
-        <div className="text-sm font-medium">Сейчас играет</div>
+        <div className="text-sm font-medium">Сейчас играет {currentTrack}</div>
         <Button
           variant="ghost"
           size="icon"

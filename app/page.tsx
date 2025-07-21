@@ -28,11 +28,29 @@ export default function Home() {
   const isPlayerOpen = useStore((state) => state.isPlayerOpen)
   const { isLoading: loadingTracks, error } = useTracks();
   const [audioUrl, setAudioUrl] = useState("")
-  // const [isPlayerOpen, setIsPlayerOpen] = useState(false)
+  const setIsPlaying = useStore((state) => state.setIsPlaying)
+  const isPlaying = useStore((state) => state.isPlaying)
+  const setCurrentTrack = useStore((state) => state.setCurrentTrack)
 
   const handlePlayTrack = (track) => {
-    setAudioUrl(`${BASE_URL}songs/${track.filePath}`)
-    openPlayer()
+    const newAudioUrl = `${BASE_URL}songs/${track.filePath}`;
+    
+    if (newAudioUrl === audioUrl && isPlaying) {
+      setIsPlaying(false);
+      // closePlayer()
+      return;
+    }
+    
+    if (newAudioUrl === audioUrl && !isPlaying) {
+      setIsPlaying(true);
+      // openPlayer(true)
+      return;
+    }
+    
+    setAudioUrl(newAudioUrl);
+    setCurrentTrack(track.title)
+    openPlayer();
+    setIsPlaying(true);
   };
 
   return (

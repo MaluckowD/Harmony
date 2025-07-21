@@ -11,7 +11,6 @@ import { useAlbum } from "@/features/getAlbum/hooks"
 import { useStore } from "@/shared/store/store"
 import { useParams } from "next/navigation"
 import { BASE_URL } from "@/shared/api/client"
-import { usePlayer } from "@/shared/context/PlayerContext"
 
 export default function AlbumPage() {
 
@@ -20,15 +19,7 @@ export default function AlbumPage() {
 
   const { isLoading, isError, error } = useAlbum(albumId);
   const album = useStore((state) => state.album)
-  const { playTrack } = usePlayer();
 
-  const handlePlayTrack = (track: Track) => {
-    playTrack({
-      ...track,
-      audioUrl: `https://tall-ghosts-burn.loca.lt/songs/${track.filePath}`,
-      imageUrl: `https://tall-ghosts-burn.loca.lt/songImages/${track.imagePath}`
-    });
-  };
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
