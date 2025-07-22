@@ -8,7 +8,7 @@ import { SearchItem } from '@/shared/components/search';
 export const Header = () => {
   const pathname = usePathname();
 
-  const isChatPage = pathname?.startsWith('/chat');
+  const isMainPage = pathname === '/'
 
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
@@ -18,12 +18,9 @@ export const Header = () => {
             <Music className="h-6 w-6 text-primary" />
             <span className="hidden sm:inline">Harmony</span>
           </Link>
-          <SearchItem/>
-          {/* {isChatPage && (
-            <div className="hidden items-center gap-1 text-sm text-muted-foreground md:flex">
-              <span>/</span>
-            </div>
-          )} */}
+          {isMainPage && (
+            <SearchItem/>
+          )}
         </div>
         <nav className="flex items-center gap-4">
           {/* <NavLinks />
