@@ -1,20 +1,13 @@
 import axios from 'axios';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://evil-queens-train.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tame-rings-laugh.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://evil-queens-train.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://tame-rings-laugh.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-// export const refreshClient = axios.create({
-//   baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://api-gpt.energy-cerber.ru/',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-// });
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
@@ -23,15 +16,3 @@ apiClient.interceptors.request.use((config) => {
   }
   return config;
 });
-
-// export const refreshApi = async (refresh_token: string | null) => {
-//   return refreshClient.post(
-//     `user/refresh`,
-//     {},
-//     {
-//       headers: {
-//         Authorization: `Bearer ${refresh_token}`,
-//       },
-//     }
-//   );
-// };
