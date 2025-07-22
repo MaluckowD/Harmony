@@ -4,6 +4,8 @@ import { iStore } from '../types/types'
 export const useStore = create<iStore>((set, get) => ({
 
     userData: null,
+    userId: -1,
+    setUserId: (value) => set({ userId: value }),
     albums: [],
     tracks: [],
     album: [],

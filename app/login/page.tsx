@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { Music } from "lucide-react"
 import Link from "next/link"
 import * as z from "zod"
+import { setCookie } from 'cookies-next'
 
 import { Button } from "@/shared/components/ui/button"
 import {
@@ -41,6 +42,7 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function LoginPage() {
   const setUserId = useStore((state) => state.setUserId)
+  const setUserName = useStore((state) => state.setUserName)
   const router = useRouter()
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -59,8 +61,17 @@ export default function LoginPage() {
       
       if (response?.status === 200 || response?.status === 201) {
         localStorage.setItem('token', response.data.token);
+        setUserName(response.data.user.username)
+        setCookie('token', response.data.token, {
+          maxAge: 60 * 60 * 24 * 7,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict'
+        })
         setUserId(response.data.user.id)
-        router.push('/');
+        router.replace('/');
+        router.refresh()
+        window.location.href = '/';
       } else {
         throw new Error(response?.data?.message || "Неизвестная ошибка")
       }
