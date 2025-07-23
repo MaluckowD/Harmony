@@ -53,31 +53,44 @@ export default function LoginPage() {
   })
 
   const onSubmit = async (values: FormValues) => {
-    try {
-      const response = await loginApi.login({
-        username: values.username,
-        password: values.password
-      })
+  try {
+    const response = await loginApi.login({
+      username: values.username,
+      password: values.password
+    });
+    
+    if (response?.status === 200 || response?.status === 201) {
+      // Сохраняем токен в localStorage
+      localStorage.setItem('token', response.data.token);
+      console.log(response.data.user.username)
       
-      if (response?.status === 200 || response?.status === 201) {
-        localStorage.setItem('token', response.data.token);
-        setUserName(response.data.user.username)
-        setCookie('token', response.data.token, {
-          maxAge: 60 * 60 * 24 * 7,
-          path: '/',
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict'
-        })
-        setUserId(response.data.user.id)
-        router.replace('/');
-        router.refresh()
-        window.location.href = '/';
-      } else {
-        throw new Error(response?.data?.message || "Неизвестная ошибка")
+      // Сохраняем данные в состоянии
+      setUserName(response.data.user.username);
+      setUserId(response.data.user.id);
+      
+      // Устанавливаем куку (учитываем development/production)
+      setCookie('token', response.data.token, {
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
+      });
+      
+      // Редирект
+      if (typeof window !== 'undefined') {
+        // window.location.href = '/'; // Простой и надежный способ
+        // Или как альтернатива:
+        router.push('/')
       }
-    } catch (error) {
+    } else {
+      throw new Error(response?.data?.message || "Неизвестная ошибка");
     }
+  } catch (error) {
+    // Обработка ошибки
+    console.error('Login error:', error);
+    // Можно добавить уведомление пользователю
   }
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">

@@ -20,6 +20,7 @@ export function UserMenu() {
 
     const [isAuth, setIsAuth] = useState(false);
     const userName = useStore((state) => state.userName)
+    console.log(userName)
 
     // const token = localStorage.getItem("token")
     const token = getCookie('token');
@@ -43,7 +44,7 @@ export function UserMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full cursor-pointer">
                     <Avatar className="h-8 w-8">
                         <AvatarFallback>
                             <User className="h-4 w-4" />

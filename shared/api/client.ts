@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tame-rings-laugh.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cold-cougars-sort.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://tame-rings-laugh.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://cold-cougars-sort.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },

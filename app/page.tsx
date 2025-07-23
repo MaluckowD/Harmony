@@ -152,7 +152,7 @@ export default function Home() {
                         <Button
                           size="icon"
                           variant="secondary"
-                          className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                           onClick={() => handlePlayTrack(track)}
                         >
                           <Play className="h-4 w-4" />
@@ -163,7 +163,7 @@ export default function Home() {
                         <p className="text-muted-foreground text-sm truncate">{track.artistName}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button size="icon" variant="ghost">
+                        <Button size="icon" variant="ghost" className="cursor-pointer">
                           <Heart className="h-4 w-4" />
                         </Button>
                         <Button size="icon" variant="ghost">
