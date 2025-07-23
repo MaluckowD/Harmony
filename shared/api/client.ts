@@ -1,16 +1,17 @@
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cold-cougars-sort.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://smart-wasps-act.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://cold-cougars-sort.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://smart-wasps-act.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+  const token = getCookie('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

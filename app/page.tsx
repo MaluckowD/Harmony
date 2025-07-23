@@ -18,9 +18,11 @@ import { useAlbums } from "@/entities/albums/hooks/use-albums"
 import { BASE_URL } from "@/shared/api/client"
 import { useTracks } from "@/entities/tracks/hooks"
 import { AudioPlayer } from "@/shared/components/AudioPlayer"
+import { useUser } from "@/entities/user/hooks/use-user"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();
+  const { data } = useUser()
   const albums = useStore((state) => state.albums)
   const tracks = useStore((state) => state.tracks)
   const openPlayer = useStore((state) => state.openPlayer)

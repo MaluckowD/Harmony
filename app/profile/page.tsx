@@ -1,3 +1,4 @@
+'use client'
 import { Heart, Play, Plus } from "lucide-react"
 
 import { Button } from "@/shared/components/ui/button"
@@ -14,8 +15,10 @@ import {
 import Image from "next/image"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/shared/components/ui/carousel"
 import Link from "next/link"
+import { useUser } from "@/entities/user/hooks/use-user"
 
 export default function ProfilePage() {
+    const { data } = useUser()
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <div className="relative">

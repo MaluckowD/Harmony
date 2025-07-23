@@ -11,12 +11,13 @@ import { useAlbum } from "@/features/getAlbum/hooks"
 import { useStore } from "@/shared/store/store"
 import { useParams } from "next/navigation"
 import { BASE_URL } from "@/shared/api/client"
+import { useUser } from "@/entities/user/hooks/use-user"
 
 export default function AlbumPage() {
 
   const params = useParams();
   const albumId = params.id as string;
-
+  const { data } = useUser()
   const { isLoading, isError, error } = useAlbum(albumId);
   const album = useStore((state) => state.album)
 

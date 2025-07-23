@@ -3,12 +3,12 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cold-cougars-sort.loca.lt',
+        hostname: 'smart-wasps-act.loca.lt',
         pathname: '/albumImages/**',
       },
       {
         protocol: 'https',
-        hostname: 'cold-cougars-sort.loca.lt',
+        hostname: 'smart-wasps-act.loca.lt',
         pathname: '/songImages/**',
       },
     ],
