@@ -3,7 +3,7 @@ import { iStore } from '../types/types'
 
 export const useStore = create<iStore>((set, get) => ({
     userData: null,
-    userId: -1,
+    userId: null,
     setUserId: (value) => set({ userId: value }),
     userName: "",
     setUserName: (value) => set({ userName: value }),
@@ -23,5 +23,9 @@ export const useStore = create<iStore>((set, get) => ({
     setTracks: (newTracks) => set({ tracks: newTracks}),
     isPlaying: false,
     setIsPlaying: (value) => set({ isPlaying: value }),
+    favoriteSongs: [],
+    favoriteAlbums: [],
+    setFavoritesSongs:  (value) => set({ favoriteSongs: value }),
+    setFavoritesAlbums:  (value) => set({ favoriteAlbums: value }),
 }))
 

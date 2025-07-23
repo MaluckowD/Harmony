@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://smart-wasps-act.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://seven-wasps-obey.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://smart-wasps-act.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://seven-wasps-obey.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
