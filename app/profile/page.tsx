@@ -1,5 +1,5 @@
 'use client'
-import { Heart, HeartOff, Play, Plus } from "lucide-react"
+import { HeartOff, Play } from "lucide-react"
 
 import { Button } from "@/shared/components/ui/button"
 import {
@@ -25,7 +25,7 @@ export default function ProfilePage() {
     const { data: favorites } = useGetFavorites()
     const favoriteSongs = useStore((state) => state.favoriteSongs)
     const favoriteAlbums = useStore((state) => state.favoriteAlbums)
-    console.log(favoriteSongs)
+    
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
