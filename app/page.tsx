@@ -19,6 +19,7 @@ import { BASE_URL } from "@/shared/api/client"
 import { useTracks } from "@/entities/tracks/hooks"
 import { AudioPlayer } from "@/shared/components/AudioPlayer"
 import { useUser } from "@/entities/user/hooks/use-user"
+import { useAddFavoriteTrack } from "@/features/addFavoriteTrack/hooks"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();
@@ -33,6 +34,7 @@ export default function Home() {
   const setAudioUrl = useStore((state) => state.setAudioUrl)
   const isPlaying = useStore((state) => state.isPlaying)
   const setCurrentTrack = useStore((state) => state.setCurrentTrack)
+  const { mutate: addToFavorites, isPending } = useAddFavoriteTrack()
 
   const handlePlayTrack = (track) => {
     const newAudioUrl = `${BASE_URL}songs/${track.filePath}`;
@@ -165,7 +167,9 @@ export default function Home() {
                         <p className="text-muted-foreground text-sm truncate">{track.artistName}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button size="icon" variant="ghost" className="cursor-pointer">
+                        <Button size="icon" variant="ghost" className="cursor-pointer" onClick = { () => {
+                          addToFavorites(track.id)
+                        }}>
                           <Heart className="h-4 w-4" />
                         </Button>
                         <Button size="icon" variant="ghost">
