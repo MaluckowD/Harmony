@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel"
 import Link from "next/link";
-import { Heart, Loader2, Play, Plus } from "lucide-react";
+import { Heart, HeartOff, Loader2, Play } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
 import { useStore } from "@/shared/store/store"
@@ -20,12 +20,16 @@ import { useTracks } from "@/entities/tracks/hooks"
 import { AudioPlayer } from "@/shared/components/AudioPlayer"
 import { useUser } from "@/entities/user/hooks/use-user"
 import { useAddFavoriteTrack } from "@/features/addFavoriteTrack/hooks"
+import { useGetFavorites } from "@/features/getFavorite/hooks"
+import { useDeleteFavoriteTrack } from "@/features/deleteFavoriteTrack/hooks"
+import { useEffect, useState } from "react"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();
   const { data } = useUser()
   const albums = useStore((state) => state.albums)
   const tracks = useStore((state) => state.tracks)
+  const favoriteSongs = useStore((state) => state.favoriteSongs)
   const openPlayer = useStore((state) => state.openPlayer)
   const isPlayerOpen = useStore((state) => state.isPlayerOpen)
   const { isLoading: loadingTracks, error } = useTracks();
@@ -35,6 +39,27 @@ export default function Home() {
   const isPlaying = useStore((state) => state.isPlaying)
   const setCurrentTrack = useStore((state) => state.setCurrentTrack)
   const { mutate: addToFavorites, isPending } = useAddFavoriteTrack()
+  const { mutate: removeFromFavorites } = useDeleteFavoriteTrack()
+  const { data: favorites } = useGetFavorites()
+  const { refetch } = useGetFavorites()
+  const [result, setResult] = useState([])
+
+  // const result = tracks.map(track => {
+  //   return favoriteSongs.some(favorite => 
+  //     favorite.songTitle.toLowerCase() === track.title.toLowerCase()
+  //   );
+  // });
+  // console.log(result)
+
+  useEffect( () => {
+    console.log(favoriteSongs)
+    const result = tracks.map(track => {
+      return favoriteSongs.some(favorite => 
+        favorite.songTitle.toLowerCase() === track.title.toLowerCase()
+      );
+    });
+    setResult(result)
+  }, [favoriteSongs])
 
   const handlePlayTrack = (track) => {
     const newAudioUrl = `${BASE_URL}songs/${track.filePath}`;
@@ -140,7 +165,7 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="space-y-2">
-              {tracks.map((track) => (
+              {tracks.map((track, index = 0) => (
                 <Card key={track.id} className="group hover:bg-muted/50 transition-colors border-border/50">
                   <CardContent className="p-0">
                     <div className="flex items-center gap-4 p-0 pl-4 pr-4">
@@ -167,14 +192,21 @@ export default function Home() {
                         <p className="text-muted-foreground text-sm truncate">{track.artistName}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button size="icon" variant="ghost" className="cursor-pointer" onClick = { () => {
+                        {result[index++] ? (
+                          <Button size="icon" variant="ghost" className="cursor-pointer" onClick = { () => {
+                          removeFromFavorites(track.id)
+                          refetch()
+                        }}>
+                          <HeartOff className="h-4 w-4" />
+                        </Button>
+                        ) : (
+                          <Button size="icon" variant="ghost" className="cursor-pointer" onClick = { () => {
                           addToFavorites(track.id)
+                          refetch()
                         }}>
                           <Heart className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="ghost">
-                          <Plus className="h-4 w-4" />
-                        </Button>
+                        ) }
                       </div>
                     </div>
                   </CardContent>
@@ -216,6 +248,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
