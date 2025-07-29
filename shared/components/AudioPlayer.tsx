@@ -1,14 +1,12 @@
-// components/AudioPlayer.tsx
 'use client'
 
 import { useState, useRef  } from 'react';
 import { Play, Pause, Volume2, VolumeX, SkipBack, SkipForward, X } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
-import { Slider } from '@/components/ui/slider';
+import { Slider } from '@/shared/components/ui/slider';
 import { useStore } from '../store/store';
 
 export const AudioPlayer = ({src}: {src: string}) => {
-  // const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

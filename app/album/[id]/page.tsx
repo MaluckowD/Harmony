@@ -11,15 +11,19 @@ import { useAlbum } from "@/features/getAlbum/hooks"
 import { useStore } from "@/shared/store/store"
 import { useParams } from "next/navigation"
 import { BASE_URL } from "@/shared/api/client"
+import { useUser } from "@/entities/user/hooks/use-user"
+import { useAddFavoriteAlbums } from "@/features/addFavoriteAlbum/hooks"
+import { useGetFavorites } from "@/features/getFavorite/hooks"
 
 export default function AlbumPage() {
 
   const params = useParams();
   const albumId = params.id as string;
-
+  const { data } = useUser()
   const { isLoading, isError, error } = useAlbum(albumId);
   const album = useStore((state) => state.album)
-
+  const { data: favorites, refetch } = useGetFavorites()
+  const { mutate: addToFavorites, isPending } = useAddFavoriteAlbums(albumId)
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -57,7 +61,10 @@ export default function AlbumPage() {
                 <Play className="h-5 w-5 mr-2" />
                 Воспроизвести
               </Button>
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" onClick={ () => {
+                addToFavorites()
+                refetch()
+              }}>
                 <Heart className="h-5 w-5 mr-2" />В избранное
               </Button>
             </div>
