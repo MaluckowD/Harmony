@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel"
 import Link from "next/link";
-import { Heart, HeartOff, Loader2, Play } from "lucide-react";
+import { Heart, HeartOff, Loader2, Play, Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { TelegramIcon } from "@/shared/components/telegram-icon";
 import { useStore } from "@/shared/store/store"
@@ -23,6 +23,7 @@ import { useAddFavoriteTrack } from "@/features/addFavoriteTrack/hooks"
 import { useGetFavorites } from "@/features/getFavorite/hooks"
 import { useDeleteFavoriteTrack } from "@/features/deleteFavoriteTrack/hooks"
 import { useEffect, useState } from "react"
+import { AddTrackModal } from "@/shared/components/AddTrackModal"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();
@@ -43,6 +44,7 @@ export default function Home() {
   const { data: favorites } = useGetFavorites()
   const { refetch } = useGetFavorites()
   const [result, setResult] = useState([])
+  const [isAddTrackModalOpen, setIsAddTrackModalOpen] = useState(false)
 
   // const result = tracks.map(track => {
   //   return favoriteSongs.some(favorite => 
@@ -156,6 +158,17 @@ export default function Home() {
 
         <div className="relative mt-10">
           <h2 className="mb-10 text-3xl font-bold">Треки</h2>
+          <Button 
+            onClick={() => setIsAddTrackModalOpen(true)}
+            className="flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Добавить трек
+          </Button>
+          <AddTrackModal 
+            isOpen={isAddTrackModalOpen}
+            onClose={() => setIsAddTrackModalOpen(false)}
+          />
           { loadingTracks ? (
                   <div className="flex h-20 items-center justify-center">
                     <Loader2 className="h-8 w-8 animate-spin" />
