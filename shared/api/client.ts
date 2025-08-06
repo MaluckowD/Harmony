@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://chatty-grapes-sink.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://calm-geese-cough.loca.lt/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://chatty-grapes-sink.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://calm-geese-cough.loca.lt/',
   headers: {
     'Content-Type': 'application/json',
   },
