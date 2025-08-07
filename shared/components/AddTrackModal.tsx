@@ -9,6 +9,8 @@ import { Label } from "@/shared/components/ui/label"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select"
 import { Upload, X, Music, ImageIcon, Loader2 } from 'lucide-react'
+import axios from "axios"
+import { apiClient } from "../api/client"
 
 interface AddTrackModalProps {
   isOpen: boolean
@@ -88,28 +90,23 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
 
     try {
       const submitData = new FormData()
-      submitData.append('title', formData.title)
-      submitData.append('artist', formData.artist)
-      submitData.append('album', formData.album)
-      submitData.append('genre', formData.genre)
-      submitData.append('year', formData.year)
-      submitData.append('description', formData.description)
-      submitData.append('audioFile', audioFile)
+      // Используем имена полей, которые ожидает сервер
+      submitData.append('Title', formData.title) // Заметье: 'Title' с большой буквы
+      submitData.append('ArtistName', formData.artist) // 'ArtistName' вместо 'artist'
+      submitData.append('File', audioFile) // 'File' вместо 'audioFile'
+      
       if (imageFile) {
-        submitData.append('imageFile', imageFile)
+        // Если сервер принимает изображение, уточните правильное имя поля
+        submitData.append('ImageFile', imageFile)
       }
 
-      // Здесь должен быть API запрос для загрузки трека
-      const response = await fetch('/api/tracks', {
-        method: 'POST',
-        body: submitData
+      const response = await apiClient.post('/api/upload', submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
 
-      if (!response.ok) {
-        throw new Error('Ошибка при загрузке трека')
-      }
-
-      // Сброс формы
+      // Обработка успешного ответа
       setFormData({
         title: '',
         artist: '',
@@ -123,6 +120,12 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
       onClose()
 
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Ошибка при загрузке трека:', error.response?.data)
+        // Можно показать пользователю сообщение об ошибке
+      } else {
+        console.error('Неизвестная ошибка:', error)
+      }
     } finally {
       setIsUploading(false)
     }
@@ -142,7 +145,6 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Основная информация */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="title">Название трека *</Label>
@@ -222,9 +224,7 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
             />
           </div>
 
-          {/* Загрузка файлов */}
           <div className="space-y-4">
-            {/* Аудиофайл */}
             <div className="space-y-2">
               <Label>Аудиофайл *</Label>
               {!audioFile ? (
@@ -267,7 +267,6 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
               )}
             </div>
 
-            {/* Обложка */}
             <div className="space-y-2">
               <Label>Обложка</Label>
               {!imageFile ? (
@@ -317,7 +316,6 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
             </div>
           </div>
 
-          {/* Кнопки */}
           <div className="flex justify-end gap-3 pt-4">
             <Button
               type="button"
