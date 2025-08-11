@@ -22,15 +22,9 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
   const [formData, setFormData] = useState({
     title: '',
     artist: '',
-    album: '',
-    genre: '',
-    year: '',
-    description: ''
   })
   const [audioFile, setAudioFile] = useState<File | null>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
   const [audioPreview, setAudioPreview] = useState<string | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -51,31 +45,11 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
     }
   }
 
-  const handleImageFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        setImageFile(file)
-        const url = URL.createObjectURL(file)
-        setImagePreview(url)
-      } else {
-      }
-    }
-  }
-
   const removeAudioFile = () => {
     setAudioFile(null)
     if (audioPreview) {
       URL.revokeObjectURL(audioPreview)
       setAudioPreview(null)
-    }
-  }
-
-  const removeImageFile = () => {
-    setImageFile(null)
-    if (imagePreview) {
-      URL.revokeObjectURL(imagePreview)
-      setImagePreview(null)
     }
   }
 
@@ -90,15 +64,10 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
 
     try {
       const submitData = new FormData()
-      // Используем имена полей, которые ожидает сервер
-      submitData.append('Title', formData.title) // Заметье: 'Title' с большой буквы
-      submitData.append('ArtistName', formData.artist) // 'ArtistName' вместо 'artist'
-      submitData.append('File', audioFile) // 'File' вместо 'audioFile'
-      
-      if (imageFile) {
-        // Если сервер принимает изображение, уточните правильное имя поля
-        submitData.append('ImageFile', imageFile)
-      }
+      submitData.append('Title', formData.title)
+      submitData.append('ArtistName', formData.artist) 
+      submitData.append('File', audioFile)
+  
 
       const response = await apiClient.post('/api/upload', submitData, {
         headers: {
@@ -106,23 +75,16 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
         }
       })
 
-      // Обработка успешного ответа
       setFormData({
         title: '',
         artist: '',
-        album: '',
-        genre: '',
-        year: '',
-        description: ''
       })
       removeAudioFile()
-      removeImageFile()
       onClose()
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Ошибка при загрузке трека:', error.response?.data)
-        // Можно показать пользователю сообщение об ошибке
       } else {
         console.error('Неизвестная ошибка:', error)
       }
@@ -169,61 +131,6 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="album">Альбом</Label>
-              <Input
-                id="album"
-                value={formData.album}
-                onChange={(e) => handleInputChange('album', e.target.value)}
-                placeholder="Введите название альбома"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="year">Год</Label>
-              <Input
-                id="year"
-                type="number"
-                min="1900"
-                max="2030"
-                value={formData.year}
-                onChange={(e) => handleInputChange('year', e.target.value)}
-                placeholder="2024"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="genre">Жанр</Label>
-            <Select value={formData.genre} onValueChange={(value) => handleInputChange('genre', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Выберите жанр" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="pop">Поп</SelectItem>
-                <SelectItem value="rock">Рок</SelectItem>
-                <SelectItem value="hip-hop">Хип-хоп</SelectItem>
-                <SelectItem value="electronic">Электронная</SelectItem>
-                <SelectItem value="jazz">Джаз</SelectItem>
-                <SelectItem value="classical">Классическая</SelectItem>
-                <SelectItem value="folk">Фолк</SelectItem>
-                <SelectItem value="other">Другое</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Описание</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              placeholder="Добавьте описание трека (необязательно)"
-              rows={3}
-            />
-          </div>
-
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Аудиофайл *</Label>
@@ -267,7 +174,7 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
               )}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label>Обложка</Label>
               {!imageFile ? (
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
@@ -313,7 +220,7 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
                   </Button>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
@@ -325,7 +232,7 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
             >
               Отмена
             </Button>
-            <Button type="submit" disabled={isUploading}>
+            <Button type="submit" disabled={isUploading} className="cursor-pointer">
               {isUploading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
