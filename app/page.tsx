@@ -23,7 +23,7 @@ import { useAddFavoriteTrack } from "@/features/addFavoriteTrack/hooks"
 import { useGetFavorites } from "@/features/getFavorite/hooks"
 import { useDeleteFavoriteTrack } from "@/features/deleteFavoriteTrack/hooks"
 import { useEffect, useState } from "react"
-import { AddTrackModal } from "@/shared/components/AddTrackModal"
+import { AddTrackModal } from "@/features/addTrack/components"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();

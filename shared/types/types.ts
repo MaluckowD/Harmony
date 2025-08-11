@@ -7,12 +7,23 @@ export interface iSong  {
     imagePath: string
 }
 
+export interface iAlbum  {
+    id: string,
+    title: string,
+    artistName: string,
+    imagePath: string,
+    songs: iSong[],
+    ////
+}
+
 
 
 export interface iStore  {
     userData: null,
     tracks: iSong[],
     userId: number | null,
+    album: iAlbum | null;
+    albums: iAlbum[],
     userName: string,
     audioUrl: string,
     token: null | string,
@@ -26,14 +37,11 @@ export interface iStore  {
     openPlayer: () => void,
     closePlayer: () => void,
     setIsPlaying: (value: boolean) => void,
+    setAlbum: (newAlbum: iAlbum) => void,
+    setAlbums: (newAlbums: iAlbum[]) => void,
+    setTracks: (newTracks: iSong[]) => void,
+    favoriteSongs: iSong[],
+    favoriteAlbums: iAlbum[],
+    setFavoritesSongs:  (value: iSong[]) => void,
+    setFavoritesAlbums:  (value: iAlbum[]) => void,
 }
-
-
-
-
-    albums: [],
-    tracks: [],
-    album: []
-    setAlbums: (newAlbums) => set({ albums: newAlbums }),
-    setAlbum: (newAlbum) => set({ album: newAlbum }),
-    setTracks: (newTracks) => set({ tracks: newTracks}),

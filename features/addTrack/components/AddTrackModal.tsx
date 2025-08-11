@@ -6,11 +6,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/compo
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { Label } from "@/shared/components/ui/label"
-import { Textarea } from "@/shared/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select"
-import { Upload, X, Music, ImageIcon, Loader2 } from 'lucide-react'
-import axios from "axios"
-import { apiClient } from "../api/client"
+import { Upload, X, Music, Loader2 } from 'lucide-react'
+import { useAddTrack } from "../hook"
 
 interface AddTrackModalProps {
   isOpen: boolean
@@ -18,13 +15,14 @@ interface AddTrackModalProps {
 }
 
 export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
-  const [isUploading, setIsUploading] = useState(false)
+  // const [isUploading, setIsUploading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     artist: '',
   })
   const [audioFile, setAudioFile] = useState<File | null>(null)
   const [audioPreview, setAudioPreview] = useState<string | null>(null)
+  const { mutate: addTrack, isLoading: isUploading } = useAddTrack()
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -60,37 +58,21 @@ export function AddTrackModal({ isOpen, onClose }: AddTrackModalProps) {
       return
     }
 
-    setIsUploading(true)
-
-    try {
-      const submitData = new FormData()
-      submitData.append('Title', formData.title)
-      submitData.append('ArtistName', formData.artist) 
-      submitData.append('File', audioFile)
-  
-
-      const response = await apiClient.post('/api/upload', submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+    addTrack(
+      { 
+        title: formData.title, 
+        artist: formData.artist, 
+        audioFile: audioFile,
+        albumId: 'your-album-id'
+      },
+      {
+        onSuccess: () => {
+          setFormData({ title: '', artist: '' })
+          setAudioFile(null)
+          onClose()
         }
-      })
-
-      setFormData({
-        title: '',
-        artist: '',
-      })
-      removeAudioFile()
-      onClose()
-
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Ошибка при загрузке трека:', error.response?.data)
-      } else {
-        console.error('Неизвестная ошибка:', error)
       }
-    } finally {
-      setIsUploading(false)
-    }
+    )
   }
 
   const handleClose = () => {

@@ -38,7 +38,7 @@ export default function AlbumPage() {
         <div className="flex flex-col md:flex-row gap-8 mb-8">
           <div className="flex-shrink-0">
             <Image
-              src={`${BASE_URL}albumImages/${album.imagePath}`}
+              src={`${BASE_URL}albumImages/${album?.imagePath}`}
               alt={"тест"}
               width={300}
               height={300}
@@ -47,14 +47,11 @@ export default function AlbumPage() {
           </div>
           <div className="flex flex-col justify-end">
             <p className="text-sm text-muted-foreground mb-2">АЛЬБОМ</p>
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">{album.title}</h1>
-            {/* <p className="text-muted-foreground mb-2">{"Для Игоря"}</p> */}
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">{album?.title}</h1>
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-              <span className="font-medium">{album.artistName}</span>
-              {/* <span>•</span>
-              <span>{"2025"}</span> */}
+              <span className="font-medium">{album?.artistName}</span>
               <span>•</span>
-              {isLoading ? (<div></div>): (<span>{album.songs.length} треков</span>)}
+              {isLoading ? (<div></div>): (<span>{album?.songs.length} треков</span>)}
             </div>
             <div className="flex items-center gap-4">
               <Button size="lg" onClick={() => handlePlayTrack(album)}>
@@ -88,7 +85,7 @@ export default function AlbumPage() {
                   <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
             ) : (
-              album.songs.map((item) => (
+              album?.songs.map((item) => (
               <Card key={item.id} className="group hover:bg-muted/50 transition-colors p-0 pt-3 pb-3">
                 <CardContent className="p-0">
                   <div className="flex items-center gap-4 p-0 pl-4 pr-4">
@@ -122,7 +119,6 @@ export default function AlbumPage() {
                       <Button size="icon" variant="ghost">
                         <Plus className="h-4 w-4" />
                       </Button>
-                      {/* <span className="text-muted-foreground text-sm w-12 text-right">{"1:89"}</span> */}
                     </div>
                   </div>
                 </CardContent>
