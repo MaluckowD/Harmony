@@ -2,13 +2,15 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'fuzzy-bags-think.loca.lt',
+        protocol: 'http',
+        hostname: '185.185.70.48',
+        port: '8081',
         pathname: '/albumImages/**',
       },
       {
-        protocol: 'https',
-        hostname: 'fuzzy-bags-think.loca.lt',
+        protocol: 'http',
+        hostname: '185.185.70.48',
+        port: '8081',
         pathname: '/songImages/**',
       },
     ],

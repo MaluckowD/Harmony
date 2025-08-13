@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fuzzy-bags-think.loca.lt/';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://185.185.70.48:8081/';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://fuzzy-bags-think.loca.lt/',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://185.185.70.48:8081/',
   headers: {
     'Content-Type': 'application/json',
   },
