@@ -1,10 +1,12 @@
+
 export interface iSong  {
     id: string,
     title: string,
     artistName: string,
     albumTitle: string,
     filePath: string,
-    imagePath: string
+    imagePath: string,
+    artistId: string
 }
 
 export interface iAlbum  {
@@ -16,6 +18,13 @@ export interface iAlbum  {
     ////
 }
 
+export interface iAuthor {
+    id: string,
+    name: string,
+    imagePath: string,
+    songs: iSong[],
+    albums: iAlbum[]
+}
 
 
 export interface iStore  {
@@ -44,4 +53,6 @@ export interface iStore  {
     favoriteAlbums: iAlbum[],
     setFavoritesSongs:  (value: iSong[]) => void,
     setFavoritesAlbums:  (value: iAlbum[]) => void,
+    authorData: iAuthor | null,
+    setAuthorData: (value: iAuthor) => void
 }

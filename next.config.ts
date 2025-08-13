@@ -13,6 +13,12 @@ module.exports = {
         port: '8081',
         pathname: '/songImages/**',
       },
+      {
+        protocol: 'http',
+        hostname: '185.185.70.48',
+        port: '8081',
+        pathname: '/artistImages/**',
+      },
     ],
   },
 }

@@ -203,7 +203,9 @@ export default function Home() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium truncate">{track.title}</h4>
-                        <p className="text-muted-foreground text-sm truncate">{track.artistName}</p>
+                        <p className="text-muted-foreground text-sm truncate">
+                          <Link href={`/artist/${track.artistId}`}>{track.artistName}</Link>
+                        </p>
                       </div>
                       <div className="flex items-center gap-2">
                         {result[index++] ? (

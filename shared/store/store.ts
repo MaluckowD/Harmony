@@ -9,7 +9,7 @@ export const useStore = create<iStore>((set, get) => ({
     setUserName: (value) => set({ userName: value }),
     albums: [],
     tracks: [],
-    album: [],
+    album: null,
     audioUrl: "",
     setAudioUrl: (value) => set({ audioUrl: value }),
     token: null,
@@ -27,5 +27,8 @@ export const useStore = create<iStore>((set, get) => ({
     favoriteAlbums: [],
     setFavoritesSongs:  (value) => set({ favoriteSongs: value }),
     setFavoritesAlbums:  (value) => set({ favoriteAlbums: value }),
+    authorData: null,
+    setAuthorData: (value) => set({authorData: value})
+
 }))
 
