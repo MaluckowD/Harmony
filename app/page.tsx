@@ -23,7 +23,7 @@ import { useAddFavoriteTrack } from "@/features/addFavoriteTrack/hooks"
 import { useGetFavorites } from "@/features/getFavorite/hooks"
 import { useDeleteFavoriteTrack } from "@/features/deleteFavoriteTrack/hooks"
 import { useEffect, useState } from "react"
-import { AddTrackModal } from "@/shared/components/AddTrackModal"
+import { AddTrackModal } from "@/features/addTrack/components"
 
 export default function Home() {
   const { isLoading, error: albumsError } = useAlbums();
@@ -160,7 +160,7 @@ export default function Home() {
           <h2 className="mb-10 text-3xl font-bold">Треки</h2>
           <Button 
             onClick={() => setIsAddTrackModalOpen(true)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 mb-10 cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             Добавить трек
@@ -186,7 +186,7 @@ export default function Home() {
                       <div className="text-muted-foreground text-sm w-6 text-center">{track.id}</div>
                       <div className="relative">
                         <Image
-                          src={`${BASE_URL}songImages/${track.imagePath}`}
+                          src={track.imagePath ? `${BASE_URL}songImages/${track.imagePath}` : '/track.svg'}
                           alt={"текст"}
                           width={60}
                           height={60}

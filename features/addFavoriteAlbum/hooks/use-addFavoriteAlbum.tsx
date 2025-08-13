@@ -6,8 +6,6 @@ import { addFavoriteAlbumApi } from '../api';
 export const useAddFavoriteAlbums = (albumId: string) => {
     const queryClient = useQueryClient();
     const userId = useStore((state) => state.userId)
-    const setState = useStore((state) => state.setState)
-    const state = useStore((state) => state.state)
 
     return useMutation({
         mutationFn: async () => {
