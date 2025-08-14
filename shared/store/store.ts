@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { iStore } from '../types/types'
 
 export const useStore = create<iStore>((set, get) => ({
+    isAuth: false,
+    setIsAuth: (value) => set({isAuth: value}),
     userData: null,
     userId: null,
     setUserId: (value) => set({ userId: value }),

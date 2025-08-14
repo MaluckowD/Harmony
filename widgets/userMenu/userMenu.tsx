@@ -13,16 +13,17 @@ import {
 import { useStore } from '@/shared/store/store';
 import { User } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getCookie } from 'cookies-next';
+import { Logout } from '@/features/logout/components';
 
 export function UserMenu() {
 
-    const [isAuth, setIsAuth] = useState(false);
+    //const [isAuth, setIsAuth] = useState(false)
     const userName = useStore((state) => state.userName)
-    console.log(userName)
+    const isAuth = useStore((state) => state.isAuth)
+    const setIsAuth = useStore((state) => state.setIsAuth)
 
-    // const token = localStorage.getItem("token")
     const token = getCookie('token');
     useEffect( () => {
         if (token) {
@@ -64,7 +65,7 @@ export function UserMenu() {
                         Профиль
                     </Link>
                 </DropdownMenuItem>
-                {/* <Logout /> */}
+                <Logout />
             </DropdownMenuContent>
         </DropdownMenu>
     );
