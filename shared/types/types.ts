@@ -28,6 +28,8 @@ export interface iAuthor {
 
 
 export interface iStore  {
+    isAuth: boolean,
+    setIsAuth: (value: boolean) => void,
     userData: null,
     tracks: iSong[],
     userId: number | null,

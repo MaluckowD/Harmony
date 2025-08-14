@@ -25,6 +25,8 @@ export default function ProfilePage() {
     const { data: favorites } = useGetFavorites()
     const favoriteSongs = useStore((state) => state.favoriteSongs)
     const favoriteAlbums = useStore((state) => state.favoriteAlbums)
+    const state = useStore((state) => state.state)
+
     
 
   return (
